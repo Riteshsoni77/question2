@@ -1,13 +1,16 @@
 package com.example.question2;
 
+import java.util.List;
+
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.http.*;
-
-import javax.annotation.PostConstruct;
-import java.util.List;
 
 @Service
 public class EmployeeAnalysisService {
@@ -34,16 +37,29 @@ public class EmployeeAnalysisService {
             return dto;
         });
 
-        // Example JWT and API URL
-        String jwt = "your_jwt_token_here";
-        String secondApiUrl = "https://your-second-api-url";
+        // Print results to console for debugging
+        results.forEach(r -> System.out.println(
+            r.getEmpId() + " | " + r.getFirstName() + " | " + r.getLastName() + " | " +
+            r.getDepartmentName() + " | " + r.getYoungerEmployeesCount()
+        ));
+
+        // Prepare API payload
+        String jwt = "your_jwt_token_here"; // <-- Replace with your actual JWT
+        String secondApiUrl = "https://bfhldevapigw.healthrx.co.in/hiring/testWebhook/JAVA";
 
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(jwt);
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<List<EmployeeDepartmentDTO>> entity = new HttpEntity<>(results, headers);
+        DataWrapper wrapper = new DataWrapper(results);
+        HttpEntity<DataWrapper> entity = new HttpEntity<>(wrapper, headers);
 
-        restTemplate.postForEntity(secondApiUrl, entity, String.class);
+        // Try API call, print error if fails
+        try {
+            restTemplate.postForEntity(secondApiUrl, entity, String.class);
+        } catch (Exception ex) {
+            System.out.println("API call failed: " + ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 }

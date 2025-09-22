@@ -1,10 +1,21 @@
 package com.example.question2;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class EmployeeDepartmentDTO {
+    @JsonProperty("EMP_ID")
     private int empId;
+
+    @JsonProperty("FIRST_NAME")
     private String firstName;
+
+    @JsonProperty("LAST_NAME")
     private String lastName;
+
+    @JsonProperty("DEPARTMENT_NAME")
     private String departmentName;
+
+    @JsonProperty("YOUNGER_EMPLOYEES_COUNT")
     private int youngerEmployeesCount;
 
     // Getters and setters
@@ -22,4 +33,8 @@ public class EmployeeDepartmentDTO {
 
     public int getYoungerEmployeesCount() { return youngerEmployeesCount; }
     public void setYoungerEmployeesCount(int youngerEmployeesCount) { this.youngerEmployeesCount = youngerEmployeesCount; }
+
+    public static void main(String[] args) {
+        String jwt = "eyJhbGciOiJIUzI1NiJ9.eyJyZWdObyI6IjA4ODdDUzIzM0QwNiIsIm5hbWUiOiJSaXRlc2ggU29uaSIsImVtYWlsIjoicml0ZXNoc29uaTExMzhAZ21haWwuY29tIiwic3ViIjoid2ViaG9vay11c2VyIiwiaWF0IjoxNzU4NTMyMzIyLCJleHAiOjE3NTg1MzMyMjJ9.WM2735awjwHU7dpyNLv8jowAk_RVdaVp2jXKCTJy1cg";
+    }
 }
